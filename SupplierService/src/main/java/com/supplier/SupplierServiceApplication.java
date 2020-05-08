@@ -15,6 +15,7 @@ import org.springframework.core.io.ClassPathResource;
 import com.supplier.config.DataBaseConfig;
 import com.supplier.domain.Account;
 import com.supplier.domain.Client;
+import com.supplier.domain.CustomScope;
 import com.supplier.domain.Customers;
 import com.supplier.domain.Flipcart;
 import com.supplier.domain.HelloIndia;
@@ -112,11 +113,18 @@ public class SupplierServiceApplication {
 		objB.getMessage3();
 		((AbstractApplicationContext) contextbeanTemp).registerShutdownHook();
 
+		ApplicationContext contextcustomscope = new ClassPathXmlApplicationContext("custom-scope.xml");
+		CustomScope customScope  = (CustomScope) contextcustomscope.getBean("customScope");
+		
+
 		//bean Factory and collection merging 
 		@SuppressWarnings("deprecation")
 		BeanFactory factory = new XmlBeanFactory(new ClassPathResource("bean-template.xml"));
 		Flipcart flipcart = factory.getBean("cart2", Flipcart.class);
 		System.out.println(flipcart);
+		
+		
+		
 	}
 
 }
