@@ -5,6 +5,9 @@
 	xmlns:c="http://www.springframework.org/schema/c"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
         https://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	
+	
 	<!--  beans Creation -->
 	<bean id="product" class="com.supplier.domain.Product">
 		<property name="id" value="100"></property>

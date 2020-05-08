@@ -2,20 +2,28 @@ package com.supplier;
 
 import java.util.Map;
 
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
+import org.springframework.beans.factory.xml.XmlBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 import org.springframework.context.support.GenericApplicationContext;
+import org.springframework.core.io.ClassPathResource;
 
 import com.supplier.config.DataBaseConfig;
 import com.supplier.domain.Account;
 import com.supplier.domain.Client;
 import com.supplier.domain.Customers;
+import com.supplier.domain.Flipcart;
+import com.supplier.domain.HelloIndia;
+import com.supplier.domain.HelloWorld;
 import com.supplier.domain.PrototypeBean;
 import com.supplier.domain.SingletonBean;
+import com.supplier.domain.Student;
 import com.supplier.domain.TextEditOuterBean;
+import com.supplier.domain.University;
 import com.supplier.domain.Supplier;
 import com.supplier.domain.User;
 import com.supplier.servicelocator.ServiceLocator;
@@ -84,13 +92,31 @@ public class SupplierServiceApplication {
 		System.out.println(" user Id : " + userDetails.getId() + " User Name :" + userDetails.getUserName());
 
 		// application context aware and method injection
-		ApplicationContext MethodInjectioncontext = new ClassPathXmlApplicationContext("beans.xml");
-		SingletonBean singleton = (SingletonBean) MethodInjectioncontext.getBean("singletonBean");
+		ApplicationContext context2 = new ClassPathXmlApplicationContext("beans.xml");
+		SingletonBean singleton = (SingletonBean) context2.getBean("singletonBean");
 		PrototypeBean prototypeBeanA = singleton.getPrototypeBean();
 		PrototypeBean prototypeBeanB = singleton.getPrototypeBean();
-		
+
 		System.out.println("Is prototypeBeanA and prototypeBeanB  same ? " + (prototypeBeanA == prototypeBeanB));
 
+		// lookup method
+		University university = (University) context2.getBean("university");
+		System.out.println(university.getStudentName().getStudentName());
+
+		// Bean Inheritance and abstract template
+		ApplicationContext contextbeanTemp = new ClassPathXmlApplicationContext("bean-template.xml");
+
+		HelloIndia objB = (HelloIndia) contextbeanTemp.getBean("helloIndia");
+		objB.getMessage1();
+		objB.getMessage2();
+		objB.getMessage3();
+		((AbstractApplicationContext) contextbeanTemp).registerShutdownHook();
+
+		//bean Factory and collection merging 
+		@SuppressWarnings("deprecation")
+		BeanFactory factory = new XmlBeanFactory(new ClassPathResource("bean-template.xml"));
+		Flipcart flipcart = factory.getBean("cart2", Flipcart.class);
+		System.out.println(flipcart);
 	}
 
 }

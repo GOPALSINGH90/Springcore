@@ -8,6 +8,7 @@ public class User {
 	
 	private Long id;
 	private String userName;
+	
 
 	public Long getId() {
 		return id;

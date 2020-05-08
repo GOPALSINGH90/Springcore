@@ -5,7 +5,7 @@ public class DataBaseConfig {
 	private String url;
 	private String username;
 	private String password;
-
+	
 	public String getDriverClassName() {
 		return driverClassName;
 	}

@@ -1,11 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
-       <bean id="prototypeBean" class="com.supplier.domain.PrototypeBean" scope="prototype">
-              <property name="message" value="Test Message" />
-       </bean>      
-       <bean id="singletonBean" class="com.supplier.domain.SingletonBean" scope="singleton">
-       </bean>      
+
+	<bean id="prototypeBean" class="com.supplier.domain.PrototypeBean"
+		scope="prototype">
+		<property name="message" value="Test Message" />
+	</bean>
+	<bean id="singletonBean" class="com.supplier.domain.SingletonBean"
+		scope="singleton">
+	</bean>
+
+	<!--lookup method implementation -->
+	<bean id="university" class="com.supplier.domain.University">
+		<lookup-method name="getStudentName" bean="student" />
+	</bean>
+	<bean id="student" class="com.supplier.domain.Student"
+		scope="prototype" />
+
+	<!--Bean Inheritance with abstract bean template -->
+	<!--<bean id="beanTeamplate" abstract="true"> <property name="message1" 
+		value="Hello World!" /> <property name="message2" value="Hello Second World!" 
+		/> <property name="message3" value="Namaste India!" /> </bean> -->
+
+	<!-- Bean Inheritance without abstract -->
+	<bean id="beanTeamplate" class="com.supplier.domain.HelloWorld">
+		<property name="message1" value="Hello World!" />
+		<property name="message2" value="Hello Second World!" />
+	</bean>
+	<bean id="beanTemplateImpl" class="com.supplier.domain.HelloIndia"
+		parent="beanTeamplate">
+		<property name="message1" value="Namaste India!" />
+	</bean>
 </beans>
