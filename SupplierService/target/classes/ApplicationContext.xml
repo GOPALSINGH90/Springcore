@@ -1,0 +1,61 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+   http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+   http://www.springframework.org/schema/context
+   http://www.springframework.org/schema/context/spring-context.xsd">
+
+
+	<!-- beans scope -->
+	<bean id="user" class="com.supplier.domain.User" scope="singleton">
+		<property name="id" value="1000"></property>
+		<property name="userName" value="Admin"></property>
+	</bean>
+
+
+	<!--dependency Injection collection scope prototype -->
+	<bean id="account" class="com.supplier.domain.Account"
+		scope="prototype">
+		<property name="accountId" value="1000"></property>
+		<property name="accountName" value="Saving Account"></property>
+		<property name="accounts">
+			<map>
+				<entry key="saving" value="2000" />
+				<entry key="current" value="3000" />
+				<entry key="Regular saving" value="4000" />
+			</map>
+		</property>
+	</bean>
+	<!-- alias of the beans -->
+	<alias name="account" alias="account-alias" />
+
+	<bean id="clientService" class="com.supplier.domain.Client"
+		factory-method="createInstance" />
+
+	<bean id="serviceLocator"
+		class="com.supplier.servicelocator.ServiceLocator">
+	</bean>
+
+	<bean id="accountService" factory-bean="serviceLocator"
+		factory-method="createAccountServiceInstance" />
+
+
+	<!-- Definition for textEditor bean using inner bean -->
+	<bean id="textEditOuterBean"
+		class="com.supplier.domain.TextEditOuterBean">
+		<property name="spellChecker">
+			<bean class="com.supplier.domain.SpellCheckInnerBean" />
+		</property>
+	</bean>
+
+
+	<!-- annotation based configuration -->
+
+	<context:component-scan
+		base-package="com.supplier"></context:component-scan>
+</beans>
